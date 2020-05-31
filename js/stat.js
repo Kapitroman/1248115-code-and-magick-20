@@ -8,7 +8,7 @@ var GAP = 10;
 var TEXT = 'Ура вы победили!\nСписок результатов:';
 var FONT_GAP = 16;
 var TEXT_FONT = 'PT Mono';
-var MAX_HIGHT_COLUMN = 150;
+var MAX_HEIGHT_COLUMN = 150;
 var WIDTH_COLUMN = 40;
 var GAP_COLUMN = 50;
 
@@ -28,12 +28,29 @@ function renderText(ctx) {
 
 function getMaxElement(arr) {
   var maxElement = arr[0];
-  for (var i = 0; i < arr.length; i++) {
+  for (var i = 1; i < arr.length; i++) {
     if (arr[i] > maxElement) {
       maxElement = arr[i];
     }
   }
   return maxElement;
+}
+
+function getRandomPercent() {
+  return Math.round(Math.random() * 100) + '%';
+}
+
+function renderTextColumn(ctx, data, x, y) {
+  ctx.fillStyle = '#000';
+  ctx.fillText(data, x, y);
+}
+
+function renderColumn(ctx, player, x, y, width, height) {
+  ctx.fillStyle = 'hsl(240, ' + getRandomPercent() + ', ' + getRandomPercent() + ')';
+  if (player === 'Вы') {
+    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+  }
+  ctx.fillRect(x, y, width, height);
 }
 
 window.renderStatistics = function (ctx, players, times) {
@@ -42,16 +59,10 @@ window.renderStatistics = function (ctx, players, times) {
   renderText(ctx);
   var maxTime = getMaxElement(times);
   for (var i = 0; i < players.length; i++) {
-    ctx.fillStyle = '#000';
-    ctx.fillText(players[i], CLOUD_X + 4 * GAP + i * (WIDTH_COLUMN + GAP_COLUMN), CLOUD_Y + CLOUD_HEIGHT - GAP);
-    ctx.fillStyle = 'hsl(240, ' + Math.floor(Math.random() * 100) + '%, ' + Math.floor(Math.random() * 100) + '%)';
-    if (players[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    }
-    var hightColumn = (MAX_HIGHT_COLUMN * times[i]) / maxTime;
-    var offSet = MAX_HIGHT_COLUMN - hightColumn;
-    ctx.fillRect(CLOUD_X + 4 * GAP + i * (WIDTH_COLUMN + GAP_COLUMN), CLOUD_Y + 9 * GAP + offSet, WIDTH_COLUMN, hightColumn);
-    ctx.fillStyle = '#000';
-    ctx.fillText(Math.round(times[i]), CLOUD_X + 4 * GAP + i * (WIDTH_COLUMN + GAP_COLUMN), CLOUD_Y + 8 * GAP + offSet);
+    renderTextColumn(ctx, players[i], CLOUD_X + 4 * GAP + i * (WIDTH_COLUMN + GAP_COLUMN), CLOUD_Y + CLOUD_HEIGHT - GAP);
+    var heightColumn = (MAX_HEIGHT_COLUMN * Math.round(times[i])) / maxTime;
+    var offSet = MAX_HEIGHT_COLUMN - heightColumn;
+    renderColumn(ctx, players[i], CLOUD_X + 4 * GAP + i * (WIDTH_COLUMN + GAP_COLUMN), CLOUD_Y + 9 * GAP + offSet, WIDTH_COLUMN, heightColumn);
+    renderTextColumn(ctx, Math.round(times[i]), CLOUD_X + 4 * GAP + i * (WIDTH_COLUMN + GAP_COLUMN), CLOUD_Y + 8 * GAP + offSet);
   }
 };
