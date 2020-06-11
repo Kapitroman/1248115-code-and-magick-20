@@ -11,6 +11,7 @@ var userDialogOpen = document.querySelector('.setup-open');
 var userDialog = document.querySelector('.setup');
 var userDialogClose = userDialog.querySelector('.setup-close');
 var username = userDialog.querySelector('.setup-user-name');
+var setupPlayer = userDialog.querySelector('.setup-player');
 
 function onPopupEscPress(evt) {
   if (evt.key === 'Escape') {
@@ -25,6 +26,7 @@ function openPopup() {
   userDialog.classList.remove('hidden');
 
   document.addEventListener('keydown', onPopupEscPress);
+  setupPlayer.addEventListener('click', onClickGetColor);
 }
 
 function closePopup() {
@@ -54,8 +56,6 @@ userDialogClose.addEventListener('keydown', function (evt) {
   }
 });
 
-var setupPlayer = userDialog.querySelector('.setup-player');
-
 var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
 var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
 
@@ -84,8 +84,6 @@ function onClickGetColor(evt) {
     inputFireballColor.value = color;
   }
 }
-
-setupPlayer.addEventListener('click', onClickGetColor);
 
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
