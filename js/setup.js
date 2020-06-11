@@ -4,16 +4,90 @@ var FIRST_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'К�
 var LAST_NAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var NUMBER_PERSONS = 4;
 
+var userDialogOpen = document.querySelector('.setup-open');
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
+var userDialogClose = userDialog.querySelector('.setup-close');
+var username = userDialog.querySelector('.setup-user-name');
 
-var similarListElement = userDialog.querySelector('.setup-similar-list');
+function onPopupEscPress(evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    if (!username.matches(':focus')) {
+      closePopup();
+    }
+  }
+}
+
+function openPopup() {
+  userDialog.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPopupEscPress);
+}
+
+function closePopup() {
+  userDialog.classList.add('hidden');
+
+  document.removeEventListener('keydown', onPopupEscPress);
+  setupPlayer.removeEventListener('click', onClickGetColor);
+}
+
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+userDialogOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    openPopup();
+  }
+});
+
+userDialogClose.addEventListener('click', function () {
+  closePopup();
+});
+
+userDialogClose.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    closePopup();
+  }
+});
+
+var setupPlayer = userDialog.querySelector('.setup-player');
+
+var wizardCoat = userDialog.querySelector('.setup-wizard .wizard-coat');
+var wizardEyes = userDialog.querySelector('.setup-wizard .wizard-eyes');
+
+var inputCoatColor = setupPlayer.querySelector('input[name="coat-color"]');
+var inputEyesColor = setupPlayer.querySelector('input[name="eyes-color"]');
+var inputFireballColor = setupPlayer.querySelector('input[name="fireball-color"]');
 
 function randomIndex(arr) {
   return Math.floor(Math.random() * arr.length);
 }
+
+function onClickGetColor(evt) {
+  var color;
+  if (evt.target === wizardCoat) {
+    color = COAT_COLOR[randomIndex(COAT_COLOR)];
+    evt.target.style.fill = color;
+    inputCoatColor.value = color;
+  } else
+  if (evt.target === wizardEyes) {
+    color = EYES_COLOR[randomIndex(EYES_COLOR)];
+    evt.target.style.fill = color;
+    inputEyesColor.value = color;
+  } else {
+    color = FIREBALL_COLOR[randomIndex(FIREBALL_COLOR)];
+    evt.target.style.backgroundColor = color;
+    inputFireballColor.value = color;
+  }
+}
+
+setupPlayer.addEventListener('click', onClickGetColor);
+
+var similarListElement = userDialog.querySelector('.setup-similar-list');
 
 function getPersons() {
   var persons = [];
