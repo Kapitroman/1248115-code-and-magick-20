@@ -6,6 +6,8 @@
   var userDialogClose = userDialog.querySelector('.setup-close');
   var setupPlayer = userDialog.querySelector('.setup-player');
   var username = userDialog.querySelector('.setup-user-name');
+  var xDialog = userDialog.style.left;
+  var yDialog = userDialog.style.top;
 
   function onPopupEscPress(evt) {
     if (evt.key === 'Escape') {
@@ -18,6 +20,8 @@
 
   function openPopup() {
     userDialog.classList.remove('hidden');
+    userDialog.style.top = yDialog;
+    userDialog.style.left = xDialog;
 
     document.addEventListener('keydown', onPopupEscPress);
     setupPlayer.addEventListener('click', window.handlerColorize);
