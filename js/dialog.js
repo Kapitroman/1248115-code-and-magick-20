@@ -24,14 +24,14 @@
     userDialog.style.left = xDialog;
 
     document.addEventListener('keydown', onPopupEscPress);
-    setupPlayer.addEventListener('click', window.handlerColorize);
+    setupPlayer.addEventListener('click', window.colorize.handlerColorize.bind(window.colorize));
   }
 
   function closePopup() {
     userDialog.classList.add('hidden');
 
     document.removeEventListener('keydown', onPopupEscPress);
-    setupPlayer.removeEventListener('click', window.handlerColorize);
+    setupPlayer.removeEventListener('click', window.colorize.handlerColorize.bind(window.colorize));
   }
 
   userDialogOpen.addEventListener('click', function () {
@@ -53,4 +53,5 @@
       closePopup();
     }
   });
+
 })();
